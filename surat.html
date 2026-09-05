@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Direktori Surat Bimbingan - PBA FITK</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .filter-section {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-section input,
+        .filter-section select {
+            min-width: 200px;
+            flex: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-text">PBA FITK UIN Jakarta</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Form Pengajuan</a></li>
+                <li><a href="index.html" onclick="localStorage.setItem('openTab', 'status')">Cek Status</a></li>
+                <li><a href="surat.html" class="active">Direktori Surat</a></li>
+                <li><a href="internal.html" class="btn-login">Login Internal</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container" style="max-width: 1000px;">
+        <div class="hero-header">
+            <h1>Direktori Surat Bimbingan Proposal</h1>
+            <p>Halaman ini dikhususkan bagi Dosen Pembimbing untuk mencari dan mengunduh (download) PDF Surat Permohonan
+                Bimbingan yang telah ditandatangani secara digital sebagai lampiran BKD.</p>
+        </div>
+
+        <div class="card">
+            <div class="filter-section">
+                <input type="text" id="search-dosen" placeholder="🔍 Cari berdasarkan Nama Dosen Pembimbing...">
+                <input type="text" id="search-mhs" placeholder="🔍 Cari berdasarkan Nama / NIM Mahasiswa...">
+            </div>
+
+            <div style="overflow-x: auto;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>No. Surat</th>
+                            <th>Tanggal Terbit</th>
+                            <th>Nama Mahasiswa</th>
+                            <th>Dosen Pembimbing</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-surat-body">
+                        <tr>
+                            <td colspan="5" style="text-align: center;">Memuat data surat...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Pendidikan Bahasa Arab - FITK UIN Syarif Hidayatullah Jakarta</p>
+    </footer>
+
+    <script>
+        // Gunakan SCRIPT_URL yang sama dengan app.js
+        // Dalam implementasi nyata, deklarasikan SCRIPT_URL di satu file terpisah (misal config.js)
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyouPJbvPRRQ-oPGu562EJ_F4kKM2U5hc6TF_IzYE0aDJvw1E7GmMMfFHZG6SO-0fJq/exec';
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            await fetchDirektoriSurat();
+            setupFilters();
+        });
+
+        async function fetchDirektoriSurat() {
+            const tbody = document.getElementById('table-surat-body');
+            try {
+                // Endpoint GAS khusus direktori surat
+                const response = await fetch(`${SCRIPT_URL}?action=direktori_surat`);
+                const json = await response.json();
+
+                tbody.innerHTML = ''; // Clear loading text
+
+                if (json.status === 'success' && json.data.length > 0) {
+                    window.suratData = json.data; // Simpan ke global variable untuk filtering lokal
+                    renderTable(json.data);
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Belum ada surat yang diterbitkan.</td></tr>';
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: red;">Gagal memuat data. Periksa URL API.</td></tr>';
+            }
+        }
+
+        function renderTable(data) {
+            const tbody = document.getElementById('table-surat-body');
+            tbody.innerHTML = '';
+
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Tidak ada data yang cocok dengan pencarian.</td></tr>';
+                return;
+            }
+
+            data.forEach(item => {
+                const dateObj = new Date(item.tanggal);
+                const dateStr = dateObj.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${item.no_surat}</strong></td>
+                    <td>${dateStr}</td>
+                    <td>${item.nama_mhs} <br> <small>${item.nim}</small></td>
+                    <td>${item.dosen}</td>
+                    <td>
+                        <a href="${item.url_surat}" target="_blank" class="download-btn" style="display:inline-block; text-align:center;">
+                            Unduh PDF
+                        </a>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function setupFilters() {
+            const searchDosen = document.getElementById('search-dosen');
+            const searchMhs = document.getElementById('search-mhs');
+
+            const filterData = () => {
+                if (!window.suratData) return;
+
+                const qDosen = searchDosen.value.toLowerCase();
+                const qMhs = searchMhs.value.toLowerCase();
+
+                const filtered = window.suratData.filter(item => {
+                    const matchDosen = item.dosen.toLowerCase().includes(qDosen);
+                    const matchMhs = item.nama_mhs.toLowerCase().includes(qMhs) || item.nim.toLowerCase().includes(qMhs);
+                    return matchDosen && matchMhs;
+                });
+
+                renderTable(filtered);
+            };
+
+            searchDosen.addEventListener('input', filterData);
+            searchMhs.addEventListener('input', filterData);
+        }
+    </script>
+</body>
+
+</html>
