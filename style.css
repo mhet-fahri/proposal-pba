@@ -357,6 +357,10 @@ footer {
 }
 
 .download-btn {
+    display: inline-block;
+    white-space: nowrap;
+    text-align: center;
+    text-decoration: none;
     background-color: #f1f2f6;
     color: #2f3542;
     padding: 0.5rem 1rem;
