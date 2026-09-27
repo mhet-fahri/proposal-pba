@@ -343,7 +343,7 @@ function renderReviewerTable(data) {
                     <option value="Revisi">Minta Revisi</option>
                     <option value="Rekomendasi ACC">Rekomendasi Di-acc</option>
                 </select>
-                <input type="file" id="file-${item.id}" style="margin-bottom:0.5rem; font-size:0.8rem;" accept=".doc,.docx">
+                <input type="file" id="file-${item.id}" style="margin-bottom:0.5rem; font-size:0.8rem;" accept=".doc,.docx,.pdf">
                 <button class="btn btn-primary" style="padding: 0.4rem 0.8rem; font-size:0.8rem;" onclick="submitReview('${item.id}')">Kirim Review</button>
             </td>
         `;
