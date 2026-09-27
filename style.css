@@ -359,8 +359,6 @@ footer {
 .download-btn {
     display: inline-block;
     white-space: nowrap;
-    text-align: center;
-    text-decoration: none;
     background-color: #f1f2f6;
     color: #2f3542;
     padding: 0.5rem 1rem;
@@ -368,6 +366,7 @@ footer {
     font-size: 0.9rem;
     font-weight: 600;
     border: 1px solid #dfe4ea;
+    text-decoration: none;
 }
 .download-btn:hover {
     background-color: #eccc68;
