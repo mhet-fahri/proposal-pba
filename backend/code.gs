@@ -279,7 +279,9 @@ function terbitkanSurat(data) {
   body.replaceText('{{SEMESTER}}', rowData[4]);
   
   // Auto-shrink untuk Judul yang terlalu panjang
-  let judulText = rowData[6];
+  // Gunakan Unicode RLE (\u202B) dan PDF (\u202C) untuk memaksa urutan baca BiDi menjadi Right-To-Left (RTL)
+  // Ini mencegah teks Arab berantakan saat ada kata bahasa Inggris/kurung di dalamnya.
+  let judulText = '\u202B' + rowData[6] + '\u202C';
   let judulElement = body.findText('{{JUDUL}}');
   if (judulElement) {
     let el = judulElement.getElement();
