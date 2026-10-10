@@ -289,23 +289,7 @@ function terbitkanSurat(data) {
     if (judulText.length > 90) {
       el.setFontSize(10);
     }
-    // Set format teks dari kanan ke kiri (RTL) dan rata kanan khusus untuk Judul (Arab)
-    let p = el;
-    while (p && p.getType() !== DocumentApp.ElementType.PARAGRAPH && p.getType() !== DocumentApp.ElementType.LIST_ITEM) {
-      if (p.getType() === DocumentApp.ElementType.BODY_SECTION) break;
-      p = p.getParent();
-    }
-    if (p && p.asParagraph) {
-      try {
-        let para = p.asParagraph();
-        para.setLeftToRight(false);
-        para.setAlignment(DocumentApp.HorizontalAlignment.RIGHT);
-        
-        let attrs = {};
-        attrs[DocumentApp.Attribute.HORIZONTAL_ALIGNMENT] = DocumentApp.HorizontalAlignment.RIGHT;
-        para.setAttributes(attrs);
-      } catch (e) {}
-    }
+    // Biarkan format template asli Google Docs yang mengambil alih (Rata Kanan dari template)
   } else {
     body.replaceText('{{JUDUL}}', judulText);
   }
