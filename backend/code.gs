@@ -287,6 +287,13 @@ function terbitkanSurat(data) {
     if (judulText.length > 90) {
       el.setFontSize(10);
     }
+    
+    // Set format teks dari kanan ke kiri (RTL) khusus untuk Judul (Arab)
+    let parent = el.getParent();
+    if (parent && parent.getType() === DocumentApp.ElementType.PARAGRAPH) {
+      parent.asParagraph().setLeftToRight(false);
+      parent.asParagraph().setAlignment(DocumentApp.HorizontalAlignment.RIGHT);
+    }
   } else {
     body.replaceText('{{JUDUL}}', judulText);
   }
