@@ -289,12 +289,14 @@ function terbitkanSurat(data) {
     if (judulText.length > 90) {
       el.setFontSize(10);
     }
-    
-    // Set format teks dari kanan ke kiri (RTL) khusus untuk Judul (Arab)
-    let parent = el.getParent();
-    if (parent && parent.getType() === DocumentApp.ElementType.PARAGRAPH) {
-      parent.asParagraph().setLeftToRight(false);
-      parent.asParagraph().setAlignment(DocumentApp.HorizontalAlignment.RIGHT);
+    // Set format teks dari kanan ke kiri (RTL) dan rata kanan khusus untuk Judul (Arab)
+    let p = el;
+    while (p && p.getType() !== DocumentApp.ElementType.PARAGRAPH && p.getType() !== DocumentApp.ElementType.LIST_ITEM && p.getType() !== DocumentApp.ElementType.TABLE_CELL) {
+      p = p.getParent();
+    }
+    if (p && (p.getType() === DocumentApp.ElementType.PARAGRAPH || p.getType() === DocumentApp.ElementType.LIST_ITEM)) {
+      p.asParagraph().setLeftToRight(false);
+      p.asParagraph().setAlignment(DocumentApp.HorizontalAlignment.RIGHT);
     }
   } else {
     body.replaceText('{{JUDUL}}', judulText);
