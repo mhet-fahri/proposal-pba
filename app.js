@@ -1,5 +1,5 @@
 // Ganti dengan URL Web App dari deployment Google Apps Script Anda nanti
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw1NSHXMIZyQuqO5Vt6XbTJfYF3M61wNXu72ve_1aHz16jIcrJui5PtGBdLAMYXSrER/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby6zc3Ke82TpBHsgjjJIEnkzLnRLjjHgmjVwL2VeBBT7A1i-gZLzktntxYuAA0gi6-B/exec';
 
 // FUNGSI NAVIGASI TAB
 function switchTab(tabName) {
