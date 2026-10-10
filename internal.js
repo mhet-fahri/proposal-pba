@@ -1,5 +1,5 @@
 // Ganti dengan URL Web App dari deployment Google Apps Script Anda nanti
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwVHRtexXktV05fl68o7pd1TEOp1TCUz13qDeggULbw3431kcl1f5vtd3p8tSIQRfmD/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxQrnX97SJ3jD6scCEA_os-nlOVirW3hQNGEs8ce9vdAlNz9shJvWL90WTcfgskL_Y4/exec';
 
 document.addEventListener('DOMContentLoaded', () => {
     // Cek status session sederhana (localStorage)
