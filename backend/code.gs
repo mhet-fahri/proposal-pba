@@ -89,8 +89,10 @@ function getDirektoriSurat() {
   for (let i = 1; i < data.length; i++) {
     // Ambil yang statusnya Di-acc dan ada URL suratnya
     if (data[i][8] === "Di-acc" && data[i][12] !== "") {
+      // Kolom 14 (O) adalah Tanggal Terbit. Jika kosong (data lama), gunakan tanggal pengajuan (kolom 0)
+      let tanggalTerbit = data[i][14] ? data[i][14] : data[i][0];
       results.push({
-        tanggal: data[i][0], no_surat: data[i][13], nama_mhs: data[i][2], 
+        tanggal: tanggalTerbit, no_surat: data[i][13], nama_mhs: data[i][2], 
         nim: data[i][3], dosen: data[i][11], url_surat: data[i][12]
       });
     }
@@ -344,6 +346,7 @@ function terbitkanSurat(data) {
   sheet.getRange(rowIndex, 12).setValue(data.dosen);
   sheet.getRange(rowIndex, 13).setValue(pdfFile.getUrl());
   sheet.getRange(rowIndex, 14).setValue(noSurat);
+  sheet.getRange(rowIndex, 15).setValue(date); // Kolom O: Tanggal Terbit
   
   // 8. Kirim Email ke Mahasiswa
   MailApp.sendEmail({
