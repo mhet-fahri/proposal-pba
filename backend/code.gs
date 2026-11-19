@@ -302,9 +302,9 @@ function terbitkanSurat(data) {
   try {
     const timestampStr = Utilities.formatDate(new Date(), "Asia/Jakarta", "dd-MM-yyyy HH:mm:ss");
     const qrText = `Surat asli dikeluarkan oleh PBA FITK UIN Jakarta. a.n ${rowData[2]} (${rowData[3]}). Disahkan pada: ${timestampStr}`;
-    const qrUrl = `https://quickchart.io/qr?text=${encodeURIComponent(qrText)}&size=150`;
+    const qrUrl = `https://quickchart.io/qr?text=${encodeURIComponent(qrText)}&size=100`;
     const qrBlob = UrlFetchApp.fetch(qrUrl).getBlob().getAs('image/png');
-    replaceTextWithImage(body, '{{QR_CODE}}', qrBlob, 80); // Set ukuran QR Code menjadi 80px
+    replaceTextWithImage(body, '{{QR_CODE}}', qrBlob, 50); // Ukuran QR Code dibuat lebih kecil (50px)
   } catch (e) {
     throw new Error("Gagal generate QR Code: " + e.message);
   }
