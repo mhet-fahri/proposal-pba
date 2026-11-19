@@ -313,7 +313,7 @@ function terbitkanSurat(data) {
   try {
     const ttdFile = DriveApp.getFileById(TTD_IMAGE_ID);
     const ttdBlob = ttdFile.getBlob().getAs(MimeType.PNG);
-    replaceTextWithImage(body, '{{TTD_KAPRODI}}', ttdBlob, 150); // Set ukuran TTD menjadi 150px
+    replaceTextWithImage(body, '{{TTD_KAPRODI}}', ttdBlob, 220); // Diperbesar menjadi 220px (sebelumnya 150px)
   } catch (e) {
     throw new Error("Gagal menyisipkan TTD: " + e.message);
   }
